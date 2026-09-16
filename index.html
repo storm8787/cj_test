@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>사랑해요, 열 번</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Serif:wght@400;600&family=Noto+Serif+KR:wght@400;600&family=Noto+Serif+SC:wght@400;600&family=Noto+Serif+JP:wght@400;600&family=Noto+Naskh+Arabic:wght@400;600&family=Noto+Serif+Devanagari:wght@400;600&family=Noto+Serif+Thai:wght@400;600&display=swap">
+<style>
+  :root {
+    --paper:      #F4F0F1;
+    --surface:    #FBF8F9;
+    --ink:        #241A20;
+    --ink-soft:   #6E5D66;
+    --rule:       #DBD0D5;
+    --accent:     #A32048;
+    --accent-ink: #7C1536;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:      #150F13;
+      --surface:    #1E171B;
+      --ink:        #F1E9ED;
+      --ink-soft:   #A8969F;
+      --rule:       #342830;
+      --accent:     #FF89A8;
+      --accent-ink: #FFB0C4;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:      #150F13;
+    --surface:    #1E171B;
+    --ink:        #F1E9ED;
+    --ink-soft:   #A8969F;
+    --rule:       #342830;
+    --accent:     #FF89A8;
+    --accent-ink: #FFB0C4;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Noto Serif", "Noto Serif KR", Georgia, serif;
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 1060px;
+    margin-inline: auto;
+    padding-inline: 20px;
+    padding-block: clamp(40px, 8vw, 84px) 52px;
+  }
+
+  /* ── 표제 ─────────────────────────────────── */
+  .masthead { display: flex; flex-direction: column; gap: 16px; }
+
+  .eyebrow {
+    margin: 0;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .masthead h1 {
+    margin: 0;
+    font-family: "Noto Serif KR", "Noto Serif", serif;
+    font-weight: 600;
+    font-size: clamp(3rem, 12vw, 7.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    color: var(--accent-ink);
+    text-wrap: balance;
+  }
+
+  .lede {
+    margin: 0;
+    max-width: 36em;
+    font-size: clamp(1rem, 2.2vw, 1.2rem);
+    color: var(--ink-soft);
+  }
+
+  .masthead hr {
+    border: 0;
+    border-top: 1px solid var(--ink);
+    margin: 12px 0 0;
+  }
+
+  /* ── 목록 ─────────────────────────────────── */
+  .entries { margin-top: 8px; }
+
+  .entry {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: 18px 44px;
+    align-items: start;
+    padding-block: clamp(26px, 4vw, 38px);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .entry--lead {
+    background: var(--surface);
+    margin-inline: calc(var(--bleed, 0px) * -1);
+    padding-inline: var(--bleed, 0px);
+    border-bottom-color: var(--ink);
+  }
+  @media (min-width: 560px) { .entry--lead { --bleed: 24px; } }
+
+  .phrase {
+    margin: 0;
+    font-size: clamp(2.1rem, 5.4vw, 3.4rem);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    overflow-wrap: anywhere;
+  }
+  .entry--lead .phrase {
+    font-size: clamp(3rem, 9vw, 5.6rem);
+    color: var(--accent-ink);
+    line-height: 1.1;
+  }
+
+  .rom {
+    margin: 10px 0 0;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12px;
+    letter-spacing: 0.03em;
+    color: var(--ink-soft);
+  }
+
+  .name {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 9px;
+  }
+  .name .latin {
+    font-family: "Bodoni Moda", Didot, Georgia, serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+  }
+
+  .tags {
+    margin: 9px 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .tags span {
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 2px 7px;
+    color: var(--ink-soft);
+  }
+  .tags .rtl { border-color: var(--accent); color: var(--accent); }
+
+  .note {
+    margin: 13px 0 0;
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    max-width: 40em;
+  }
+  .note b {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  /* 문자별 서체 */
+  .s-hangul     { font-family: "Noto Serif KR", serif; }
+  .s-latin      { font-family: "Bodoni Moda", Didot, Georgia, serif; letter-spacing: -0.01em; }
+  .s-han        { font-family: "Noto Serif SC", "Noto Serif KR", serif; }
+  .s-jp         { font-family: "Noto Serif JP", "Noto Serif KR", serif; }
+  .s-arabic     { font-family: "Noto Naskh Arabic", serif; line-height: 1.6; }
+  .s-devanagari { font-family: "Noto Serif Devanagari", serif; line-height: 1.45; }
+  .s-cyrillic   { font-family: "Noto Serif", serif; }
+  .s-thai       { font-family: "Noto Serif Thai", serif; line-height: 1.6; }
+
+  /* ── 꼬리말 ───────────────────────────────── */
+  .colophon {
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px 28px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.05em;
+    color: var(--ink-soft);
+  }
+  .colophon p { margin: 0; max-width: 44em; }
+  .colophon a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  .colophon a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  @media (max-width: 640px) {
+    .entry { grid-template-columns: 1fr; gap: 14px; }
+  }
+</style>
+</head>
+<body>
+<main class="page">
+
+  <header class="masthead">
+    <p class="eyebrow">10 languages · 8 writing systems</p>
+    <h1>사랑해요</h1>
+    <p class="lede">같은 마음을 열 개의 언어로 옮기면, 옮겨지지 않는 것들이 드러납니다. 어떤 말은 듣는 사람의 성별에 따라 어미가 바뀌고, 어떤 말은 너무 무거워서 좀처럼 입 밖에 내지 않습니다.</p>
+    <hr>
+  </header>
+
+  <section class="entries">
+
+    <article class="entry entry--lead">
+      <div>
+        <p class="phrase s-hangul" lang="ko">사랑해요</p>
+        <p class="rom">saranghaeyo</p>
+      </div>
+      <div>
+        <h2 class="name">한국어 <span class="latin">Korean</span></h2>
+        <p class="tags"><span>한글</span><span>ko</span><span>좌 → 우</span></p>
+        <p class="note">높임의 단계가 말 자체에 새겨집니다. <b>사랑해</b>(반말), <b>사랑해요</b>(해요체), <b>사랑합니다</b>(합쇼체) — 상대와의 거리가 어미 하나로 정해집니다.</p>
+      </div>
+    </article>
+
+    <article class="entry">
+      <div>
+        <p class="phrase s-latin" lang="en">I love you</p>
+        <p class="rom">aɪ lʌv juː</p>
+      </div>
+      <div>
+        <h2 class="name">영어 <span class="latin">English</span></h2>
+        <p class="tags"><span>라틴</span><span>en</span><span>좌 → 우</span></p>
+        <p class="note">형태는 하나뿐입니다. 연인에게도 부모에게도 같은 문장을 쓰고, 무게는 말투와 상황이 대신 실어 나릅니다.</p>
+      </div>
+    </article>
+
+    <article class="entry">
+      <div>
+        <p class="phrase s-han" lang="zh-Hans">我爱你</p>
+        <p class="rom">wǒ ài nǐ</p>
+      </div>
+      <div>
+        <h2 class="name">중국어 <span class="latin">Chinese</span></h2>
+        <p class="tags"><span>한자 简体</span><span>zh</span><span>좌 → 우</span></p>
+        <p class="note">직역하면 <b>나 · 사랑 · 너</b> 세 글자. 일상에서는 꽤 무겁게 들려서, 가벼운 자리에서는 <b>我喜欢你</b>(좋아해)를 더 자주 씁니다.</p>
+      </div>
+    </article>
+
+    <article class="entry">
+      <div>
+        <p class="phrase s-jp" lang="ja">愛してる</p>
+        <p class="rom">aishiteru</p>
+      </div>
+      <div>
+        <h2 class="name">일본어 <span class="latin">Japanese</span></h2>
+        <p class="tags"><span>한자 + 가나</span><span>ja</span><span>좌 → 우</span></p>
+        <p class="note">사전에는 있지만 입에는 잘 오르지 않습니다. 실제 대화에서는 <b>好きだよ</b>(suki da yo)가 훨씬 흔하고, 정중형은 <b>愛しています</b>입니다.</p>
+      </div>
+    </article>
+
+    <article class="entry">
+      <div>
+        <p class="phrase s-arabic" lang="ar" dir="rtl">أحبك</p>
+        <p class="rom">uḥibbuka · uḥibbuki</p>
+      </div>
+      <div>
+        <h2 class="name">아랍어 <span class="latin">Arabic</span></h2>
+        <p class="tags"><span>아랍</span><span>ar</span><span class="rtl">우 → 좌</span></p>
+        <p class="note">듣는 사람의 성별이 어미에 붙습니다. 남성에게는 <b>أحبكَ</b>(uḥibbuka), 여성에게는 <b>أحبكِ</b>(uḥibbuki) — 누구에게 하는 말인지 감출 수 없습니다.</p>
+      </div>
+    </article>
+
+    <article class="entry">
+      <div>
+        <p class="phrase s-devanagari" lang="hi">मैं तुमसे प्यार करता हूँ</p>
+        <p class="rom">main tumse pyaar karta hoon</p>
+      </div>
+      <div>
+        <h2 class="name">힌디어 <span class="latin">Hindi</span></h2>
+        <p class="tags"><span>데바나가리</span><span>hi</span><span>좌 → 우</span></p>
+        <p class="note">이번에는 <b>말하는</b> 사람의 성별이 동사에 드러납니다. 화자가 여성이면 <b>करती</b>(karti)로 바뀝니다.</p>
+      </div>
+    </article>
+
+    <article class="entry">
+      <div>
+        <p class="phrase s-cyrillic" lang="ru">Я тебя люблю</p>
+        <p class="rom">ya tebya lyublyu</p>
+      </div>
+      <div>
+        <h2 class="name">러시아어 <span class="latin">Russian</span></h2>
+        <p class="tags"><span>키릴</span><span>ru</span><span>좌 → 우</span></p>
+        <p class="note">직역하면 <b>나 · 너를 · 사랑한다</b>. 격이 역할을 표시하므로 어순을 자유롭게 바꿔 강조할 수 있습니다 — <b>Люблю тебя</b>처럼 주어를 아예 생략하기도 합니다.</p>
+      </div>
+    </article>
+
+    <article class="entry">
+      <div>
+        <p class="phrase s-latin" lang="es">Te quiero</p>
+        <p class="rom">te ˈkje.ɾo</p>
+      </div>
+      <div>
+        <h2 class="name">스페인어 <span class="latin">Spanish</span></h2>
+        <p class="tags"><span>라틴</span><span>es</span><span>좌 → 우</span></p>
+        <p class="note">두 단계가 따로 있습니다. <b>Te quiero</b>는 가족과 친구까지 닿고, <b>Te amo</b>는 연인에게 남겨 둡니다.</p>
+      </div>
+    </article>
+
+    <article class="entry">
+      <div>
+        <p class="phrase s-latin" lang="fr">Je t'aime</p>
+        <p class="rom">ʒə tɛm</p>
+      </div>
+      <div>
+        <h2 class="name">프랑스어 <span class="latin">French</span></h2>
+        <p class="tags"><span>라틴</span><span>fr</span><span>좌 → 우</span></p>
+        <p class="note">부사 하나가 뜻을 낮춥니다. <b>Je t'aime bien</b>은 강조가 아니라 오히려 "그냥 좋아하는 정도"로 물러섭니다.</p>
+      </div>
+    </article>
+
+    <article class="entry">
+      <div>
+        <p class="phrase s-thai" lang="th">ฉันรักเธอ</p>
+        <p class="rom">chan rak thoe</p>
+      </div>
+      <div>
+        <h2 class="name">태국어 <span class="latin">Thai</span></h2>
+        <p class="tags"><span>타이</span><span>th</span><span>좌 → 우</span></p>
+        <p class="note">주어부터 화자의 성별을 드러냅니다. 남성은 <b>ผม</b>(phom), 여성은 <b>ฉัน</b>(chan)으로 문장을 시작합니다.</p>
+      </div>
+    </article>
+
+  </section>
+
+  <footer class="colophon">
+    <p>로마자 표기는 각 언어의 통용 표기를 따랐고, 격식과 쓰임에 대한 설명은 일상 회화에서의 일반적인 용법입니다.</p>
+    <p><a href="hello.html">→ 안녕하세요, 열 가지</a></p>
+  </footer>
+
+</main>
+</body>
+</html>
