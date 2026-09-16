@@ -1,0 +1,89 @@
+# GitHub → AI 정부실험실 공공 GitLab 단방향 미러링
+#
+# 이 저장소(GitHub)가 원본(source of truth)입니다.
+# 이 워크플로는 GitHub에서 GitLab 방향으로만 푸시하며,
+# GitLab에서 GitHub로 가져오는(fetch/pull) 동작은 일절 하지 않습니다.
+# 전송 대상은 main 브랜치 하나뿐이며, 태그나 다른 브랜치는 보내지 않습니다.
+
+name: Mirror main to AIGOV GitLab
+
+on:
+  # main 브랜치로의 모든 push에서 실행됩니다.
+  # PR 병합(merge / squash / rebase)도 main에 대한 push를 발생시키므로
+  # 이 트리거 하나로 함께 처리됩니다. pull_request 트리거를 따로 두면
+  # 같은 병합에 대해 두 번 푸시하게 되므로 추가하지 않았습니다.
+  push:
+    branches:
+      - main
+  # 수동 실행 (Actions 탭 → Run workflow)
+  workflow_dispatch:
+
+# 원본 저장소를 읽기만 하면 되므로 최소 권한만 부여합니다.
+permissions:
+  contents: read
+
+# 미러 푸시가 동시에 겹쳐 실행되지 않도록 직렬화합니다.
+# 진행 중인 푸시를 중간에 끊으면 GitLab 쪽이 어중간한 상태로 남을 수 있으므로
+# cancel-in-progress 는 끕니다.
+concurrency:
+  group: mirror-to-gitlab
+  cancel-in-progress: false
+
+env:
+  GITLAB_REPO_URL: https://gitlab.aigov.go.kr/storm8787/cj_test.git
+
+jobs:
+  mirror:
+    name: Push main to GitLab
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: main 브랜치 전체 이력 체크아웃
+        uses: actions/checkout@v4
+        with:
+          # workflow_dispatch 가 다른 브랜치에서 실행되더라도
+          # 항상 main 만 가져와 전송합니다.
+          ref: main
+          # 미러링은 전체 커밋 이력이 필요하므로 얕은 클론을 해제합니다.
+          fetch-depth: 0
+          # GITHUB_TOKEN 이 .git/config 에 남지 않도록 합니다.
+          persist-credentials: false
+
+      - name: GitLab으로 main 푸시
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${GITLAB_TOKEN:-}" ]; then
+            echo "::error::GITLAB_TOKEN 시크릿이 설정되어 있지 않습니다. Settings → Secrets and variables → Actions 에서 등록하세요."
+            exit 1
+          fi
+
+          # 토큰은 리모트 URL이 아니라 HTTP 인증 헤더로 전달합니다.
+          # URL에 넣으면 .git/config 파일과 git 오류 메시지에 남을 수 있습니다.
+          auth="$(printf '%s' "oauth2:${GITLAB_TOKEN}" | base64 -w0)"
+
+          # Actions 는 시크릿 원문만 자동 마스킹하므로,
+          # base64 로 인코딩된 값은 직접 마스킹 등록합니다.
+          echo "::add-mask::${auth}"
+
+          # --force: GitHub 가 원본이므로 GitLab 쪽 상태를 GitHub 에 맞춥니다.
+          # HEAD:refs/heads/main: main 하나만, 태그 없이 전송합니다.
+          git -c "http.${GITLAB_REPO_URL}.extraheader=Authorization: Basic ${auth}" \
+            push --force "${GITLAB_REPO_URL}" "HEAD:refs/heads/main"
+
+      - name: 실행 결과 요약
+        if: always()
+        run: |
+          set -euo pipefail
+          {
+            echo "### GitLab 미러링"
+            echo ""
+            echo "| 항목 | 값 |"
+            echo "| --- | --- |"
+            echo "| 대상 | \`gitlab.aigov.go.kr/storm8787/cj_test\` |"
+            echo "| 브랜치 | \`main\` |"
+            echo "| 커밋 | \`${GITHUB_SHA}\` |"
+            echo "| 결과 | ${{ job.status }} |"
+          } >> "$GITHUB_STEP_SUMMARY"
