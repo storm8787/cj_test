@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>열 가지 안녕하세요</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans:wght@400;600;700&family=Noto+Sans+KR:wght@500;700&family=Noto+Sans+SC:wght@500;700&family=Noto+Sans+JP:wght@500;700&family=Noto+Sans+Arabic:wght@500;700&family=Noto+Sans+Devanagari:wght@500;700&family=Noto+Sans+Thai:wght@500;700&display=swap">
+<style>
+  :root {
+    --paper:      #EDEEF1;
+    --surface:    #F8F9FB;
+    --ink:        #15181F;
+    --ink-soft:   #565C6B;
+    --rule:       #CDD2DC;
+    --accent:     #2B45C9;
+    --accent-ink: #1B2E8F;
+    --accent-wash:#E2E6FA;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:      #0F1117;
+      --surface:    #171A22;
+      --ink:        #E8EAF0;
+      --ink-soft:   #99A0B1;
+      --rule:       #2A2F3B;
+      --accent:     #93A7FF;
+      --accent-ink: #B9C6FF;
+      --accent-wash:#1B2140;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:      #0F1117;
+    --surface:    #171A22;
+    --ink:        #E8EAF0;
+    --ink-soft:   #99A0B1;
+    --rule:       #2A2F3B;
+    --accent:     #93A7FF;
+    --accent-ink: #B9C6FF;
+    --accent-wash:#1B2140;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Noto Sans", "Noto Sans KR", system-ui, -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sheet {
+    max-width: 1140px;
+    margin-inline: auto;
+    padding-inline: 20px;
+    padding-block: clamp(40px, 8vw, 88px) 56px;
+  }
+
+  /* ── 머리말 ───────────────────────────────── */
+  .masthead { display: flex; flex-direction: column; gap: 18px; }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0;
+  }
+
+  .masthead h1 {
+    font-family: "Noto Sans KR", "Noto Sans", sans-serif;
+    font-weight: 700;
+    font-size: clamp(3.2rem, 13vw, 8rem);
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .masthead .lede {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+    line-height: 1.5;
+    color: var(--ink-soft);
+    max-width: 34em;
+    margin: 0;
+  }
+
+  .masthead hr {
+    border: 0;
+    border-top: 1px solid var(--ink);
+    margin: 10px 0 0;
+  }
+
+  /* ── 견본 격자 ─────────────────────────────── */
+  .specimens {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(258px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border-bottom: 1px solid var(--rule);
+    margin-top: 40px;
+  }
+
+  .spec {
+    background: var(--paper);
+    padding: 26px 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .spec--lead {
+    grid-column: 1 / -1;
+    background: var(--surface);
+    padding-block: clamp(30px, 5vw, 46px);
+  }
+
+  .word {
+    font-size: clamp(2.6rem, 6.2vw, 4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+  .spec--lead .word {
+    font-size: clamp(3.4rem, 11vw, 7rem);
+    color: var(--accent-ink);
+  }
+
+  .rom {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12.5px;
+    letter-spacing: 0.02em;
+    color: var(--ink-soft);
+    margin: -6px 0 0;
+  }
+  .rom::before { content: "/ "; opacity: 0.55; }
+  .rom::after  { content: " /"; opacity: 0.55; }
+
+  .name {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .name .latin {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 500;
+    font-size: 0.92rem;
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+
+  .meta {
+    margin: 0;
+    padding-top: 13px;
+    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 16px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+  }
+  .spec--lead .meta { grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); }
+
+  .meta dt {
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-size: 9.5px;
+  }
+  .meta dd {
+    margin: 2px 0 0;
+    color: var(--ink);
+    font-weight: 500;
+    font-size: 11.5px;
+  }
+  .meta .rtl-flag { color: var(--accent); }
+
+  /* 문자별 서체 지정 */
+  .s-hangul     { font-family: "Noto Sans KR", sans-serif; }
+  .s-latin      { font-family: "Fraunces", Georgia, serif; letter-spacing: -0.015em; }
+  .s-han        { font-family: "Noto Sans SC", "Noto Sans KR", sans-serif; }
+  .s-kana       { font-family: "Noto Sans JP", "Noto Sans KR", sans-serif; }
+  .s-arabic     { font-family: "Noto Sans Arabic", sans-serif; line-height: 1.5; }
+  .s-devanagari { font-family: "Noto Sans Devanagari", sans-serif; line-height: 1.4; }
+  .s-cyrillic   { font-family: "Noto Sans", sans-serif; }
+  .s-thai       { font-family: "Noto Sans Thai", sans-serif; line-height: 1.5; }
+
+  /* ── 꼬리말 ───────────────────────────────── */
+  .colophon {
+    margin-top: 34px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px 28px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+  }
+  .colophon p { margin: 0; max-width: 46em; }
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="eyebrow">10 languages · 8 writing systems</p>
+    <h1>안녕하세요</h1>
+    <p class="lede">하나의 인사말이 열 개의 언어와 여덟 개의 문자 체계를 건너간 기록. 각 견본에는 로마자 표기, 문자, 표기 방향, 대략적인 사용자 수를 함께 적었습니다.</p>
+    <hr>
+  </header>
+
+  <section class="specimens">
+
+    <article class="spec spec--lead">
+      <p class="word s-hangul" lang="ko">안녕하세요</p>
+      <p class="rom">annyeonghaseyo</p>
+      <h2 class="name">한국어 <span class="latin">Korean</span></h2>
+      <dl class="meta">
+        <div><dt>문자</dt><dd>한글 Hangul</dd></div>
+        <div><dt>표기 방향</dt><dd>좌 → 우</dd></div>
+        <div><dt>언어 코드</dt><dd>ko · kor</dd></div>
+        <div><dt>사용 인구</dt><dd>약 8,200만</dd></div>
+        <div><dt>창제</dt><dd>1443년</dd></div>
+      </dl>
+    </article>
+
+    <article class="spec">
+      <p class="word s-latin" lang="en">Hello</p>
+      <p class="rom">həˈloʊ</p>
+      <h2 class="name">영어 <span class="latin">English</span></h2>
+      <dl class="meta">
+        <div><dt>문자</dt><dd>라틴 Latin</dd></div>
+        <div><dt>방향</dt><dd>좌 → 우</dd></div>
+        <div><dt>코드</dt><dd>en · eng</dd></div>
+        <div><dt>사용 인구</dt><dd>약 15억</dd></div>
+      </dl>
+    </article>
+
+    <article class="spec">
+      <p class="word s-han" lang="zh-Hans">你好</p>
+      <p class="rom">nǐ hǎo</p>
+      <h2 class="name">중국어 <span class="latin">Chinese</span></h2>
+      <dl class="meta">
+        <div><dt>문자</dt><dd>한자 简体</dd></div>
+        <div><dt>방향</dt><dd>좌 → 우</dd></div>
+        <div><dt>코드</dt><dd>zh · zho</dd></div>
+        <div><dt>사용 인구</dt><dd>약 11억</dd></div>
+      </dl>
+    </article>
+
+    <article class="spec">
+      <p class="word s-kana" lang="ja">こんにちは</p>
+      <p class="rom">konnichiwa</p>
+      <h2 class="name">일본어 <span class="latin">Japanese</span></h2>
+      <dl class="meta">
+        <div><dt>문자</dt><dd>히라가나</dd></div>
+        <div><dt>방향</dt><dd>좌 → 우</dd></div>
+        <div><dt>코드</dt><dd>ja · jpn</dd></div>
+        <div><dt>사용 인구</dt><dd>약 1억 2천만</dd></div>
+      </dl>
+    </article>
+
+    <article class="spec">
+      <p class="word s-arabic" lang="ar" dir="rtl">مرحبا</p>
+      <p class="rom">marḥaban</p>
+      <h2 class="name">아랍어 <span class="latin">Arabic</span></h2>
+      <dl class="meta">
+        <div><dt>문자</dt><dd>아랍 Arabic</dd></div>
+        <div><dt>방향</dt><dd class="rtl-flag">우 → 좌</dd></div>
+        <div><dt>코드</dt><dd>ar · ara</dd></div>
+        <div><dt>사용 인구</dt><dd>약 4억</dd></div>
+      </dl>
+    </article>
+
+    <article class="spec">
+      <p class="word s-devanagari" lang="hi">नमस्ते</p>
+      <p class="rom">namaste</p>
+      <h2 class="name">힌디어 <span class="latin">Hindi</span></h2>
+      <dl class="meta">
+        <div><dt>문자</dt><dd>데바나가리</dd></div>
+        <div><dt>방향</dt><dd>좌 → 우</dd></div>
+        <div><dt>코드</dt><dd>hi · hin</dd></div>
+        <div><dt>사용 인구</dt><dd>약 6억</dd></div>
+      </dl>
+    </article>
+
+    <article class="spec">
+      <p class="word s-cyrillic" lang="ru">Здравствуйте</p>
+      <p class="rom">zdravstvuyte</p>
+      <h2 class="name">러시아어 <span class="latin">Russian</span></h2>
+      <dl class="meta">
+        <div><dt>문자</dt><dd>키릴 Cyrillic</dd></div>
+        <div><dt>방향</dt><dd>좌 → 우</dd></div>
+        <div><dt>코드</dt><dd>ru · rus</dd></div>
+        <div><dt>사용 인구</dt><dd>약 2억 5천만</dd></div>
+      </dl>
+    </article>
+
+    <article class="spec">
+      <p class="word s-latin" lang="es">¡Hola!</p>
+      <p class="rom">ˈo.la</p>
+      <h2 class="name">스페인어 <span class="latin">Spanish</span></h2>
+      <dl class="meta">
+        <div><dt>문자</dt><dd>라틴 Latin</dd></div>
+        <div><dt>방향</dt><dd>좌 → 우</dd></div>
+        <div><dt>코드</dt><dd>es · spa</dd></div>
+        <div><dt>사용 인구</dt><dd>약 5억 6천만</dd></div>
+      </dl>
+    </article>
+
+    <article class="spec">
+      <p class="word s-latin" lang="fr">Bonjour</p>
+      <p class="rom">bɔ̃.ʒuʁ</p>
+      <h2 class="name">프랑스어 <span class="latin">French</span></h2>
+      <dl class="meta">
+        <div><dt>문자</dt><dd>라틴 Latin</dd></div>
+        <div><dt>방향</dt><dd>좌 → 우</dd></div>
+        <div><dt>코드</dt><dd>fr · fra</dd></div>
+        <div><dt>사용 인구</dt><dd>약 3억 1천만</dd></div>
+      </dl>
+    </article>
+
+    <article class="spec">
+      <p class="word s-thai" lang="th">สวัสดี</p>
+      <p class="rom">sawatdee</p>
+      <h2 class="name">태국어 <span class="latin">Thai</span></h2>
+      <dl class="meta">
+        <div><dt>문자</dt><dd>타이 Thai</dd></div>
+        <div><dt>방향</dt><dd>좌 → 우</dd></div>
+        <div><dt>코드</dt><dd>th · tha</dd></div>
+        <div><dt>사용 인구</dt><dd>약 6,100만</dd></div>
+      </dl>
+    </article>
+
+  </section>
+
+  <footer class="colophon">
+    <p>사용 인구는 제1언어와 제2언어 사용자를 합한 어림값입니다. 로마자 표기는 각 언어의 통용 표기를 따랐습니다.</p>
+    <p>본문 Noto Sans · 표제 Fraunces · 데이터 IBM Plex Mono</p>
+  </footer>
+
+</main>
+</body>
+</html>
